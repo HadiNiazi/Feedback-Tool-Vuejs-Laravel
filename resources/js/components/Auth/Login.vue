@@ -3,6 +3,14 @@
       <div class="login-container">
         <form class="login-form">
           <h2 class="login-heading">Welcome Back!</h2>
+
+          <!-- Display validation errors -->
+          <div v-if="errors.length">
+            <ul>
+                <li v-for="error in errors" :key="error" class="error-message">{{ error }}</li>
+            </ul>
+          </div>
+
           <label for="email">Email:</label>
           <input type="text" id="email" v-model="email" placeholder="Enter your email" required>
 
@@ -16,36 +24,62 @@
   </template>
 
 <script>
-import { ref } from 'vue';
-import axios from 'axios';
 
-export default {
-  setup() {
-    const email = ref('');
-    const password = ref('');
 
-    const login = async () => {
-      try {
+
+import router from '../../router/index.js';
+
+  export default {
+    data() {
+      return {
+        email: '',
+        password: '',
+        errors: [],
+      };
+    },
+    methods: {
+      async login() {
+
+        try {
         const response = await axios.post('/login', {
-          email: email.value,
-          password: password.value,
+            email: this.email,
+            password: this.password,
         });
 
-        // Handle the response, e.g., redirect on successful login
-        console.log(response.data);
-      } catch (error) {
-        // Handle login error
-        console.error(error.response.data);
-      }
-    };
 
-    return {
-      email,
-      password,
-      login,
-    };
-  },
-};
+        if (response.status === 200) {
+
+            this.successMessage = response.data.message; // Set the success message
+            this.email = '';
+            this.password = '';
+
+            this.$router.push({ name: 'dashboard' });
+        }
+
+        } catch (error) {
+
+            if (error.response) {
+
+                if (error.response.status === 422) {
+                // Validation error, update the errors variable
+                    this.errors = Object.values(error.response.data.errors).flat();
+                }
+
+            }
+            else {
+                this.errors = error;
+            }
+
+        }
+
+
+      },
+    },
+  };
+
+
+
+
 </script>
 
   <style scoped>
@@ -107,4 +141,9 @@ export default {
   button:hover {
     background-color: #7441db;
   }
+
+  .error-message {
+    color: #ff0000;
+    margin-top: 5px;
+}
   </style>

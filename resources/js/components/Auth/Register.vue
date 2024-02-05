@@ -6,6 +6,8 @@
           <h2 class="register-heading">Create an Account</h2>
 
           <!-- Error message for password mismatch -->
+          <p v-if="passwordMismatch" class="error-message">Passwords do not match.</p>
+
           <!-- Display validation errors -->
           <div v-if="errors.length">
             <ul>
@@ -17,7 +19,6 @@
             {{ successMessage }}
           </div>
 
-          <p v-if="passwordMismatch" class="error-message">Passwords do not match.</p>
 
           <label for="name">Name:</label>
           <input type="name" id="name" v-model="name" placeholder="Enter your name" required>
@@ -38,7 +39,7 @@
   </template>
 
 <script>
-import axios from 'axios';
+
 import router from '../../router/index.js';
 
   export default {

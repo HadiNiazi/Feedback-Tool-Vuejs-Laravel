@@ -5,6 +5,7 @@ import Login from '../components/Auth/Login.vue';
 import Register from '../components/Auth/Register.vue';
 
 import Home from '../components/Home.vue';
+import Dashboard from '../components/Dashboard.vue';
 
 
 
@@ -17,21 +18,27 @@ const routes = [
 
 
     {
-        path: '/register',
+        path: '/api/register',
         name: 'register',
         component: Register
     },
 
     {
-        path: '/login',
+        path: '/api/login',
         name: 'login',
         component: Login
     },
 
     {
-        path: '/home',
+        path: '/api/home',
         name: 'home',
         component: Home
+    },
+
+    {
+        path: '/api/dashboard',
+        name: 'dashboard',
+        component: Dashboard
     },
 
 ];
