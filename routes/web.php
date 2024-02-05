@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,10 @@ Route::get('/', function () {
 Route::get('{any?}', function () {
     return view('app');
 })->where('any', '.*');
+
+
+Route::controller(AuthController::class)->group(function() {
+    Route::post('login', 'login')->name('login');
+    Route::post('register', 'register')->name('register');
+    Route::get('home', 'openHomepage')->name('home');
+});
