@@ -1,42 +1,51 @@
 <template>
-    <div class="app-container">
-      <div class="register-container">
+    <div class="container">
+     <div class="row">
+         <div class="col-md-6 col-md-offset-3 login-container">
+             <h3>Create an Account</h3>
 
-        <form class="register-form">
-          <h2 class="register-heading">Create an Account</h2>
+             <!-- Error message for password mismatch -->
+            <p v-if="passwordMismatch" class="error-message">Passwords do not match.</p>
 
-          <!-- Error message for password mismatch -->
-          <p v-if="passwordMismatch" class="error-message">Passwords do not match.</p>
-
-          <!-- Display validation errors -->
-          <div v-if="errors.length">
+            <!-- Display validation errors -->
+            <div v-if="errors.length">
             <ul>
                 <li v-for="error in errors" :key="error" class="error-message">{{ error }}</li>
             </ul>
-          </div>
+            </div>
 
-          <div v-if="successMessage" class="success-message">
-            {{ successMessage }}
-          </div>
+            <div v-if="successMessage" class="success-message">
+                {{ successMessage }}
+            </div>
 
+             <form>
+                 <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="name" id="name" class="form-control" v-model="name" placeholder="Enter your name" required>
+                 </div>
 
-          <label for="name">Name:</label>
-          <input type="name" id="name" v-model="name" placeholder="Enter your name" required>
+                 <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" class="form-control" v-model="email" placeholder="Enter your email" required>
+                 </div>
 
-          <label for="email">Email:</label>
-          <input type="email" id="email" v-model="email" placeholder="Enter your email" required>
+                 <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" class="form-control" v-model="password" placeholder="Choose a password" required>
+                 </div>
 
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="password" placeholder="Choose a password" required>
+                 <div class="form-group">
+                    <label for="passwordConfirmation">Confirm Password:</label>
+                    <input type="password" id="passwordConfirmation" class="form-control" v-model="passwordConfirmation" placeholder="Confirm your password" required>
+                 </div>
 
-          <label for="passwordConfirmation">Confirm Password:</label>
-          <input type="password" id="passwordConfirmation" v-model="passwordConfirmation" placeholder="Confirm your password" required>
+                 <button type="submit" @click.prevent="register" class="btn btn-primary btn-login">Register</button>
+             </form>
+         </div>
+     </div>
+ </div>
+ </template>
 
-          <button type="submit" @click.prevent="register">Register</button>
-        </form>
-      </div>
-    </div>
-  </template>
 
 <script>
 
@@ -69,7 +78,7 @@ import router from '../../router/index.js';
         // Add your registration logic here
 
         try {
-        const response = await axios.post('/register', {
+        const response = await axios.post('/api/register', {
             name: this.name,
             email: this.email,
             password: this.password,
@@ -110,67 +119,30 @@ import router from '../../router/index.js';
       },
     },
   };
-  </script>
+</script>
 
   <style scoped>
-  .app-container {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to right, #A17EB8, #7441db);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-
-  .register-container {
+  .login-container {
+    margin-top: 50px;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.login-container h3 {
+    margin-bottom: 20px;
     text-align: center;
-  }
-
-  .register-form {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    width: 300px;
-  }
-
-  .register-heading {
-    color: #5d44f7;
-  }
-
-  label {
-    display: block;
-    text-align: left;
-    margin: 15px 0 5px 0;
-    color: #555555;
-  }
-
-  input {
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    font-weight: bold;
+}
+.btn-login {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    box-sizing: border-box;
-    border: 1px solid #aaaaaa;
-    border-radius: 5px;
-  }
-
-  button {
-    background-color: #5d44f7;
-    color: #ffffff;
-    padding: 12px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #7441db;
-  }
+}
 
   .error-message {
     color: #ff0000;

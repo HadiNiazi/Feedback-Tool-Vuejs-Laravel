@@ -5,9 +5,6 @@ import { createApp } from 'vue';
 
 import App from './components/App.vue';
 
-// import Bootstrap from './bootstrap.js';
-
-
 import router from './router/index.js';
 
 import store from './store/index.js';

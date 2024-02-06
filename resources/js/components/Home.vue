@@ -1,30 +1,9 @@
 <template>
-    Welcome to the Vuejs homepage <br>
+<div>
 
 
-    {{ data }}
-
-    <button class="btn btn-danger">Dlete</button>
+    <div class="container">
+        <h3 class="text-center">Welcome to the Feedback Tool App</h3>
+    </div>
+</div>
 </template>
-
-
-<script>
-import axios from 'axios';
-
-export default {
-
-    data() {
-        return {
-            data: ''
-        }
-    },
-
-    mounted() {
-        axios.get('/api/home').then( (response) => {
-
-            this.data = response.data.home
-        })
-    }
-
-}
-</script>
