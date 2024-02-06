@@ -24,10 +24,7 @@
   </template>
 
 <script>
-
-
-
-import router from '../../router/index.js';
+import axios from 'axios';
 
   export default {
     data() {
@@ -38,42 +35,84 @@ import router from '../../router/index.js';
       };
     },
     methods: {
-      async login() {
 
-        try {
-        const response = await axios.post('/login', {
-            email: this.email,
-            password: this.password,
-        });
+        async login() {
+            try {
 
+               // Fetch CSRF token
+                await axios.get('/sanctum/csrf-cookie');
 
-        if (response.status === 200) {
+                const response = await axios.post('/login', {
+                    email: this.email,
+                    password: this.password,
+                });
 
-            this.successMessage = response.data.message; // Set the success message
-            this.email = '';
-            this.password = '';
+                if (response.status === 200) {
+                    this.successMessage = response.data.message; // Set the success message
+                    this.email = '';
+                    this.password = '';
 
-            this.$router.push({ name: 'dashboard' });
-        }
+                    localStorage.setItem('auth_token', response.data.token);
 
-        } catch (error) {
-
-            if (error.response) {
-
-                if (error.response.status === 422) {
-                // Validation error, update the errors variable
-                    this.errors = Object.values(error.response.data.errors).flat();
+                    this.$router.push({ name: 'dashboard' });
                 }
 
+
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 422) {
+                        // Validation error, update the errors variable
+                        this.errors = Object.values(error.response.data.errors).flat();
+                    }
+                } else {
+                    this.errors = error;
+                }
             }
-            else {
-                this.errors = error;
-            }
-
-        }
+        },
 
 
-      },
+
+
+    //   async login() {
+
+    //     try {
+    //     const response = await axios.post('/login', {
+    //         email: this.email,
+    //         password: this.password,
+    //     });
+
+
+    //     if (response.status === 200) {
+
+    //         this.successMessage = response.data.message; // Set the success message
+    //         this.email = '';
+    //         this.password = '';
+
+    //         localStorage.setItem('auth_token', 'Bearer '+ response.data.token);
+    //         // axios.defaults.headers.common["Authorization"] = token;
+    //         // this.$store.dispatch('setToken', response.data.token);
+
+    //         this.$router.push({ name: 'dashboard' });
+    //     }
+
+    //     } catch (error) {
+
+    //         if (error.response) {
+
+    //             if (error.response.status === 422) {
+    //             // Validation error, update the errors variable
+    //                 this.errors = Object.values(error.response.data.errors).flat();
+    //             }
+
+    //         }
+    //         else {
+    //             this.errors = error;
+    //         }
+
+    //     }
+
+
+    //   },
     },
   };
 

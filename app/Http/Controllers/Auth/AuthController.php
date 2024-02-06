@@ -40,15 +40,19 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
-            $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
+        $user = User::where('email', $request->email)->first();
 
-            return response()->json(['token' => $token, 'user' => $user]);
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
         }
 
-        throw ValidationException::withMessages(['email' => ['Invalid credentials']]);
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['token' => $token, 'user' => $user]);
+
     }
 
     public function logout(Request $request)
@@ -60,7 +64,9 @@ class AuthController extends Controller
 
     public function openHomepage()
     {
-        return 'Homepage';
+        return response()->json([
+            'home' => 'Homepage data is transfering from back to front'
+        ], 201);
     }
 
 }

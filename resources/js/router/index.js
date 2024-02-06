@@ -6,37 +6,44 @@ import Register from '../components/Auth/Register.vue';
 
 import Home from '../components/Home.vue';
 import Dashboard from '../components/Dashboard.vue';
+import NotFound from '../components/Errors/404.vue';
+// import NotFound from '../components/Errors/404.vue';
+
 
 
 
 const routes = [
 
     {
+        path: '/:any',
+        component: NotFound
+    },
+
+    {
         path: '/',
         component: App
     },
 
-
     {
-        path: '/api/register',
+        path: '/register',
         name: 'register',
         component: Register
     },
 
     {
-        path: '/api/login',
+        path: '/login',
         name: 'login',
         component: Login
     },
 
     {
-        path: '/api/home',
+        path: '/home',
         name: 'home',
         component: Home
     },
 
     {
-        path: '/api/dashboard',
+        path: '/dashboard',
         name: 'dashboard',
         component: Dashboard
     },
