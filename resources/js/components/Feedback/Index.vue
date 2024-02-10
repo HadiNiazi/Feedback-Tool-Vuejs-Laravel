@@ -18,7 +18,6 @@
                         <th>Title</th>
                         <th>Category</th>
                         <th>User</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
@@ -27,7 +26,6 @@
                         <td>{{ truncateText(feedback.title) }}</td>
                         <td>{{ feedback.category ? feedback.category.name: '' }}</td>
                         <td>{{ feedback.user ? feedback.user.name: '' }}</td>
-                        <td><router-link :to="'feedbacks/show/' +feedback.id" style="text-decoration: none;">Leave comment</router-link></td>
                         <!-- Add more columns here if needed -->
                     </tr>
 
@@ -80,7 +78,7 @@
     mounted() {
         this.loadFeedbacks();
         console.group(this.feedbacks)
-        this.fetchPaginatedData('/api/feedbacks/my');
+        this.fetchPaginatedData('/api/feedbacks');
     },
 
 
@@ -89,7 +87,7 @@
         async loadFeedbacks() {
 
             try {
-                const response = await axios.get('/api/feedbacks/my');
+                const response = await axios.get('/api/feedbacks');
 
                 if (response.status === 200) {
                     this.feedbacks = response.data.feedbacks; // Set the success message

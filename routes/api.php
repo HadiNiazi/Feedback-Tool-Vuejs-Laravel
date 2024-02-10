@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\FeedbackController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +28,32 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::get('home', [AuthController::class, 'openHomepage'])->name('home');
+
+    Route::controller(AuthController::class)->group(function() {
+        Route::get('home', 'openHomepage')->name('home');
+        Route::post('logout', 'logout')->name('logout');
+    });
+
+    Route::prefix('feedbacks')->as('feedbacks.')->controller(FeedbackController::class)->group(function() {
+        Route::get('/', 'index')->name('index');
+        Route::post('store', 'store')->name('store');
+        Route::get('show/{id}', 'show')->name('show');
+
+        Route::get('my', 'openMyFeedbacks')->name('my');
+
+        Route::get('categories', 'categories')->name('categories');
+    });
+
+    Route::prefix('feedbacks/comments')->controller(CommentController::class)->group(function() {
+        Route::get('/{feedbackId}', 'loadFeedbackComments')->name('index');
+        Route::post('store', 'store')->name('store');
+    });
+
+    Route::get('/users', [UserController::class, 'loadUsers'])->name('users');
+
+
+});
+
+Route::middleware('auth:sanctum')->get('/auth-check', function (Request $request) {
+    return response()->json(['authenticated' => auth()->check()]);
 });

@@ -12,6 +12,7 @@ import store from './store/index.js';
 const app = createApp(App);
 
 app.use(router);
-app.provide('store', store);
+app.use(store);
+// app.provide('store', store);
 
 app.mount('#app');

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\API\Auth\LoginRequest;
+use App\Http\Requests\API\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +21,7 @@ class AuthController extends Controller
 
             $user = User::create([
                 'name' => $request->name,
+                'username' => str_replace(' ', '', strtolower($request->name)),
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
@@ -57,7 +58,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Successfully logged out']);
     }

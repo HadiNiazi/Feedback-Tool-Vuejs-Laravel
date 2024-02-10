@@ -1,41 +1,37 @@
 <template>
-
     <div>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary  bg-dark border-bottom border-body" data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Feedback App</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <router-link to="/" class="nav-link active" aria-current="page">Home</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/feedbacks" class="nav-link">My Feedbacks</router-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <router-link to="/dashboard" v-if="isAuthenticated" class="btn btn-outline-success" type="submit"><span class="glyphicon glyphicon-home"></span> Dashboard</router-link> &nbsp;
-        <router-link to="/logout" v-if="isAuthenticated" @click="logout" class="btn btn-outline-danger" type="submit"><span class="glyphicon glyphicon-log-out"></span> Logout</router-link>  &nbsp;
-        <router-link to="/login" v-if="!isAuthenticated" class="btn btn-outline-primary" type="submit"><span class="glyphicon glyphicon-log-in"></span> Login</router-link>  &nbsp;
-        <router-link to="/register" v-if="!isAuthenticated" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-user"></span> Sign Up</router-link>  &nbsp;
-      </form>
-    </div>
-  </div>
-</nav>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Feedback App</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Page 1</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li v-if="isAuthenticated"><router-link to="/dashboard"></router-link></li>
+                    <li v-if="isAuthenticated"><a @click="logout"></a></li>
+                    <li v-if="!isAuthenticated"><router-link to="/login"></router-link></li>
+                    <li v-if="!isAuthenticated"><router-link to="/register"></router-link></li>
+                </ul>
+                </div>
+            </div>
+        </nav>
 
-
-<div class="container">
+        <div class="container">
             <router-view></router-view>
         </div>
-
     </div>
-</template>
+    </template>
+
+
 
 <script>
 import axios from 'axios';
@@ -118,3 +114,7 @@ export default {
 
 }
 </script>
+
+
+<style>
+</style>
