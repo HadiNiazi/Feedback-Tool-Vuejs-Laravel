@@ -4,11 +4,11 @@
         <div class="col-md-8"> <!-- Adjust this to fit your layout -->
           <div class="mt-5">
 
-            <router-link to="/feedbacks/create" class="btn btn-info mb-3">Add New Feedback</router-link>
+            <router-link to="/feedbacks/create" class="btn btn-info mb-3 text-white">Add New Feedback</router-link>
 
             <div class="card">
               <div class="card-header">
-                Feedbacks
+                My Feedbacks
               </div>
               <div class="card-body">
 

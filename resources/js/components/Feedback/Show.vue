@@ -4,7 +4,7 @@
         <div class="col-md-10">
           <!-- Adjust this to fit your layout -->
           <div class="mt-5">
-            <router-link to="/dashboard" class="btn btn-info mb-3">Go Back</router-link>
+            <router-link to="/dashboard" class="btn btn-info text-white mb-3">Go Back</router-link>
             <div class="container">
               <h6 class="mt-4 mb-2">Feedback Details</h6>
               <!-- Feedback Details -->
@@ -26,17 +26,24 @@
                 <form @submit.prevent="submitComment">
                   <div class="mb-3">
                     <textarea class="form-control" id="commentContent" ref="commentInput" @input="handleInput" v-model="newComment" placeholder="write comment here..." required></textarea>
+                    <div class="mt-2">
+                        <button type="button" @click="applyFormatting('bold')" class="btn btn-sm btn-info text-white">Bold</button> &nbsp;
+                        <button type="button" @click="applyFormatting('italic')" class="btn btn-sm btn-info text-white">Italic</button> &nbsp;
+                        <button type="button" @click="applyFormatting('underline')" class="btn btn-sm btn-info text-white">Underline</button>
+                    </div>
                     <ul v-if="showSuggestions && !suggestionClicked" class="list-group">
                       <li v-for="user in filteredUsers" :key="user.id" class="list-group-item" @click="mentionUser(user)">
                         {{ user.name }}
                       </li>
                     </ul>
                   </div>
-                  <button type="submit" class="btn btn-primary">Comment</button>
+                  <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Comment</button>
+                  </div>
                 </form>
               </div>
               <div>
-                <h6 class="mt-5">Comments</h6>
+                <h6 class="mt-5">Comments ({{ comments.length }})</h6>
                 <div v-if="comments.length === 0">
                   <p>No comments yet.</p>
                 </div>
@@ -67,7 +74,12 @@
           showSuggestions: false,
           suggestionClicked: false,
           filteredUsers: [],
-          users: []
+          users: [],
+          formattingOptions: {
+            bold: false,
+            italic: false,
+            code: false
+          }
         };
       },
       created() {
@@ -131,26 +143,83 @@
         highlightMentions(text) {
           const mentionRegex = /@(\w+)/g;
           return text.replace(mentionRegex, '<span class="mention">$&</span>');
-            },
-            handleInput() {
-              const matches = this.newComment.match(/@([^\s@]+)/gi);
-              if (matches && matches.length > 0) {
-                const username = matches[0].substr(1);
-                this.filteredUsers = this.users.filter(user => user.username.toLowerCase().includes(username.toLowerCase()));
-                this.showSuggestions = this.filteredUsers.length > 0;
-              } else {
-                this.showSuggestions = false;
-              }
-            },
-            mentionUser(user) {
-              const mention = `@${user.username} `;
-              this.newComment = this.newComment.replace(/@\w+\s*$/, mention);
-              this.$refs.commentInput.focus();
-              this.showSuggestions = false;
-              this.suggestionClicked = true;
+        },
+        handleInput() {
+            const matches = this.newComment.match(/@([^\s@]+)/gi);
+            if (matches && matches.length > 0) {
+            const username = matches[0].substr(1);
+            this.filteredUsers = this.users.filter(user => user.username.toLowerCase().includes(username.toLowerCase()));
+            this.showSuggestions = this.filteredUsers.length > 0;
+            } else {
+            this.showSuggestions = false;
             }
+        },
+        mentionUser(user) {
+            const mention = `@${user.username} `;
+            this.newComment = this.newComment.replace(/@\w+\s*$/, mention);
+            this.$refs.commentInput.focus();
+            this.showSuggestions = false;
+            this.suggestionClicked = true;
+        },
+
+        applyFormatting(format) {
+
+            if (format == 'bold') {
+
+              const formatTag = 'strong';
+              this.formatComment(formatTag);
+
+            }
+            if (format == 'italic') {
+
+              const formatTag = 'i';
+              this.formatComment(formatTag);
+
+            }
+            if (format == 'underline') {
+
+              const formatTag = 'u';
+              this.formatComment(formatTag);
+
+            }
+        },
+
+        formatComment(formatTag) {
+            const selectionStart = this.$refs.commentInput.selectionStart;
+            const selectionEnd = this.$refs.commentInput.selectionEnd;
+
+            // Get the current value of the textarea
+            const currentValue = this.newComment;
+
+            // Define a regular expression to match @user mentions
+            const mentionRegex = /@(\w+)/g;
+
+            // Get the selected text
+            const selectedText = currentValue.substring(selectionStart, selectionEnd);
+
+            // Check if the selected text includes @user mentions
+            const isMentionedUser = mentionRegex.test(selectedText);
+
+            // If @user mentions are found, exclude them from being formatted
+            let formattedText;
+            if (isMentionedUser) {
+                // Don't apply formatting if mentions are included in the selected text
+                formattedText = currentValue;
+            } else {
+                // Apply the formatting to the selected text
+                formattedText = `${currentValue.substring(0, selectionStart)}<${formatTag}>${selectedText}</${formatTag}>${currentValue.substring(selectionEnd)}`;
+            }
+
+            // Update the comment with the formatted text
+            this.newComment = formattedText;
         }
-      };
+
+
+
+
+
+        }
+    };
   </script>
   <style>
     .mention {

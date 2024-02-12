@@ -4,7 +4,8 @@
         <div class="col-md-8"> <!-- Adjust this to fit your layout -->
           <div class="mt-5">
 
-            <router-link to="/feedbacks" class="btn btn-info mb-3">Feedbacks</router-link>
+            <router-link to="/feedbacks" class="btn btn-info mb-3 text-white">Go to Feedbacks</router-link> &nbsp;
+            <router-link to="/dashboard" class="btn btn-info mb-3 text-white">Go to My Feedbacks</router-link>
 
             <div class="card">
               <div class="card-header">

@@ -32,7 +32,7 @@
                     </tr>
 
                     <tr v-else>
-                        <td colspan="3" class="text-danger text-bold"><b>No feedback found.</b></td>
+                        <td colspan="4" class="text-danger text-bold"><b>No feedback found.</b></td>
                     </tr>
 
                 </tbody>
@@ -78,6 +78,7 @@
     },
 
     mounted() {
+
         this.loadFeedbacks();
         console.group(this.feedbacks)
         this.fetchPaginatedData('/api/feedbacks/my');

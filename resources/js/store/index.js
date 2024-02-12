@@ -3,8 +3,7 @@ import axios from 'axios';
 
 export default createStore({
   state: {
-    token: null,
-    demo: 'Yes it is demo',
+    token: localStorage.getItem('authToken') || '',
     isAuthenticated: false
   },
   mutations: {
@@ -16,7 +15,13 @@ export default createStore({
     clearAuthentication(state) {
         state.token = null;
         state.isAuthenticated = false;
-        // Clear any other user-related state as needed
+
+        // localStorage.removeItem('auth_token');
+    },
+
+    setToken (state, token) {
+        state.token = token;
+        localStorage.setItem('auth_token', token);
     }
 
   },
@@ -29,21 +34,27 @@ export default createStore({
           commit('setAuthenticationStatus', isAuthenticated);
           return isAuthenticated; // Return authentication status
         } catch (error) {
-          console.error('Failed to fetch authentication status:', error);
-          throw error; // Rethrow error to handle it in the component
+        //   console.error('Failed to fetch authentication status:', error);
+        //   throw error; // Rethrow error to handle it in the component
         }
-      },
+    },
 
-      logout({ commit }) {
+    setAuthToken({ commit }, token) {
+        commit('setToken', token);
+        commit('setAuthenticationStatus', true);
+    },
 
-        // Clear any authentication-related state
+    logout({ commit }) {
+
         commit('clearAuthentication');
         // Optionally, perform any other cleanup tasks (e.g., clear local storage)
         localStorage.removeItem('auth_token'); // Example: Clear token from local storage
-      }
+        delete axios.defaults.headers.common['Authorization']
+    }
 
   },
   getters: {
     getToken: state => state.token,
+    getAuthenticatedStatus: state => state.isAuthenticated,
   }
 });

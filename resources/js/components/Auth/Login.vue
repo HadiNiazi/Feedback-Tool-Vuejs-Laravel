@@ -59,8 +59,11 @@
             this.successMessage = response.data.message; // Set the success message
             this.email = '';
             this.password = '';
-            this.$store.dispatch('checkAuthentication')
-            localStorage.setItem('auth_token', response.data.token);
+
+            // this.$store.dispatch('loginUser', true);
+
+            this.$store.dispatch('setAuthToken', response.data.token)
+
             this.$router.push({
               name: 'dashboard'
             });

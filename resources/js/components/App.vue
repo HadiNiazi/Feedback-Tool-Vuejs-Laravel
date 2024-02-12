@@ -10,13 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <router-link to="/" class="nav-link active" aria-current="page">Home</router-link>
-        </li>
-        <li class="nav-item">
           <router-link to="/feedbacks" class="nav-link">My Feedbacks</router-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
       <form class="d-flex" role="search">
@@ -38,22 +32,34 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../store/axios.js';
 // import auth from '@/utils/auth';
 
 export default {
 
     data() {
         return {
-            isLogin: false
+            // isLogin: false
         }
     },
 
     created () {
-        axios.defaults.headers.common["Authorization"] = 'Bearer '+ localStorage.getItem('auth_token');
+
     },
 
     mounted() {
+
+    // Set the default authorization header for Axios
+    // if (authToken) {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+    // console.log('inside set')
+    // }
+
+    // console.log(authToken)
+
+    // console.log('checking')
+
+
 
         this.$store.dispatch('checkAuthentication')
         // .then(isAuthenticated => {
@@ -75,43 +81,22 @@ export default {
 
     methods: {
 
-        logout() {
-            this.$store.dispatch('logout');
+        async logout() {
+            try {
 
-            this.$router.push('/login');
+                await axios.post('/api/logout');
+                this.$store.dispatch('logout');
+                this.$router.push('/login');
 
-            // this.$store.dispatch('logout')
-            // .then(isAuthenticated => {
-            //     this.isLogin = isAuthenticated;
-            //     console.log('Logout status:', isAuthenticated);
-            // })
-            // .catch(error => {
-            //     console.error('Logout status:', error);
-            // });
-
-        // Optionally, redirect to login page or perform other actions after logout
-        }
-
-        // async logout() {
-        //     try {
-        //     await axios.post('/api/logout');
-        //     // Clear local storage, update state, etc.
-        //     // auth.logout();
-        //     this.isLogin = false;
-        //     this.isAuthenticated = false
-        //     console.log('Logged out successfully');
-        //     this.$router.push('/login'); // Redirect to login page
-        //     } catch (error) {
-        //         console.error('Logout failed:', error);
-        //     }
-        // },
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
+        },
 
     },
 
     computed: {
         isAuthenticated() {
-            // return this.$store.state.demo;
-
             return this.$store.state.isAuthenticated;
         }
     },

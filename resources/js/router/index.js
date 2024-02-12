@@ -23,10 +23,10 @@ const routes = [
         component: NotFound
     },
 
-    {
-        path: '/',
-        component: Home
-    },
+    // {
+    //     path: '/',
+    //     component: Home
+    // },
 
     {
         path: '/register',
@@ -43,32 +43,30 @@ const routes = [
     {
         path: '/dashboard',
         name: 'dashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta: { requiresAuth: true },
     },
 
     {
         path: '/feedbacks/create',
         name: 'feedbacks.create',
-        component: FeedbackCreate
+        component: FeedbackCreate,
+        meta: { requiresAuth: true },
     },
 
     {
         path: '/feedbacks/show/:id',
         name: 'feedbacks.show',
-        component: FeedbackShow
+        component: FeedbackShow,
+        meta: { requiresAuth: true },
     },
 
     {
         path: '/feedbacks',
         name: 'feedbacks',
-        component: Feedbacks
-    },
-
-    // {
-    //     path: '/logout',
-    //     name: 'logout',
-    //     component: Logout
-    // },
+        component: Feedbacks,
+        meta: { requiresAuth: true },
+    }
 
 ];
 
@@ -81,21 +79,24 @@ const router = createRouter({
 
 
 // router.beforeEach((to, from, next) => {
+
 //     const isAuthenticated = store.state.isAuthenticated;
 
-//     console.log(isAuthenticated)
-//     // Check if the route requires authentication and user is not logged in
 //     if (to.meta.requiresAuth && !isAuthenticated) {
-//       // Redirect to login page
+
 //       next('/login');
-//     } else if ((to.name === 'Login' || to.name === 'Register') && isAuthenticated) {
-//       // Redirect to dashboard if user is already logged in and trying to access login or register page
+
+//     } else if ((to.name === 'login' || to.name === 'register') && isAuthenticated ) {
+
 //       next('/dashboard');
+
 //     } else {
-//       // Continue navigation
+
+//         console.log(isAuthenticated)
+
 //       next();
 //     }
-//   });
+// });
 
 
 export default router;
