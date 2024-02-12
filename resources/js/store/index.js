@@ -15,8 +15,6 @@ export default createStore({
     clearAuthentication(state) {
         state.token = null;
         state.isAuthenticated = false;
-
-        // localStorage.removeItem('auth_token');
     },
 
     setToken (state, token) {
@@ -32,7 +30,7 @@ export default createStore({
           const response = await axios.get('/api/auth-check');
           const isAuthenticated = response.data.authenticated;
           commit('setAuthenticationStatus', isAuthenticated);
-          return isAuthenticated; // Return authentication status
+          return isAuthenticated;
         } catch (error) {
         //   console.error('Failed to fetch authentication status:', error);
         //   throw error; // Rethrow error to handle it in the component
@@ -47,8 +45,8 @@ export default createStore({
     logout({ commit }) {
 
         commit('clearAuthentication');
-        // Optionally, perform any other cleanup tasks (e.g., clear local storage)
-        localStorage.removeItem('auth_token'); // Example: Clear token from local storage
+
+        localStorage.removeItem('auth_token');
         delete axios.defaults.headers.common['Authorization']
     }
 

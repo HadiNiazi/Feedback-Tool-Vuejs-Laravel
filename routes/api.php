@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('store', 'store')->name('store');
         Route::get('show/{id}', 'show')->name('show');
 
-        Route::get('my', 'openMyFeedbacks')->name('my');
+        // Route::get('my', 'openMyFeedbacks')->name('my');
 
         Route::get('categories', 'categories')->name('categories');
     });

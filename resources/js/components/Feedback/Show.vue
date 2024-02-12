@@ -2,11 +2,14 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-10">
-          <!-- Adjust this to fit your layout -->
+
           <div class="mt-5">
-            <router-link to="/dashboard" class="btn btn-info text-white mb-3">Go Back</router-link>
+
+            <router-link to="/dashboard" class="btn btn-info mb-3 text-white">Go Back</router-link>
+
             <div class="container">
               <h6 class="mt-4 mb-2">Feedback Details</h6>
+
               <!-- Feedback Details -->
               <div class="card mb-3">
                 <div class="card-body">
@@ -14,6 +17,7 @@
                   <p class="card-text">{{ feedback.description }}</p>
                 </div>
               </div>
+
               <!-- New Comment Form -->
               <div>
                 <h6 class="mt-5">Add a Comment</h6>
@@ -27,11 +31,11 @@
                   <div class="mb-3">
                     <textarea class="form-control" id="commentContent" ref="commentInput" @input="handleInput" v-model="newComment" placeholder="write comment here..." required></textarea>
                     <div class="mt-2">
-                        <button type="button" @click="applyFormatting('bold')" class="btn btn-sm btn-info text-white">Bold</button> &nbsp;
-                        <button type="button" @click="applyFormatting('italic')" class="btn btn-sm btn-info text-white">Italic</button> &nbsp;
-                        <button type="button" @click="applyFormatting('underline')" class="btn btn-sm btn-info text-white">Underline</button>
+                        <button type="button" @click="applyFormatting('bold')" class="btn btn-sm btn-info text-white" :class="{ disabled: newComment == '' }">Bold</button> &nbsp;
+                        <button type="button" @click="applyFormatting('italic')" class="btn btn-sm btn-info text-white" :class="{ disabled: newComment == '' }">Italic</button> &nbsp;
+                        <button type="button" @click="applyFormatting('underline')" class="btn btn-sm btn-info text-white" :class="{ disabled: newComment == '' }">Underline</button>
                     </div>
-                    <ul v-if="showSuggestions && !suggestionClicked" class="list-group">
+                    <ul v-if="showSuggestions && !suggestionClicked" class="list-group mt-2">
                       <li v-for="user in filteredUsers" :key="user.id" class="list-group-item" @click="mentionUser(user)">
                         {{ user.name }}
                       </li>
@@ -42,6 +46,8 @@
                   </div>
                 </form>
               </div>
+
+              <!-- Comments -->
               <div>
                 <h6 class="mt-5">Comments ({{ comments.length }})</h6>
                 <div v-if="comments.length === 0">
@@ -82,15 +88,19 @@
           }
         };
       },
+
       created() {
         this.feedbackId = this.$route.params.id;
       },
+
       mounted() {
         this.loadFeedbackDetails();
         this.loadFeedbackComments();
         this.loadUsers();
       },
+
       methods: {
+
         submitComment() {
           axios.post('/api/feedbacks/comments/store', {
             feedback_id: this.feedback.id,
@@ -213,14 +223,10 @@
             // Update the comment with the formatted text
             this.newComment = formattedText;
         }
-
-
-
-
-
-        }
+      }
     };
   </script>
+
   <style>
     .mention {
       color: #644CC6;

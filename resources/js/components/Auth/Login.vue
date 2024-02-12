@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-6"> <!-- Adjust this to fit your layout -->
+        <div class="col-md-6">
           <div class="mt-5">
             <div class="card">
               <div class="card-header">
@@ -49,7 +49,7 @@
     methods: {
       async login() {
         try {
-          // Fetch CSRF token
+
           await axios.get('/sanctum/csrf-cookie');
           const response = await axios.post('/api/login', {
             email: this.email,
@@ -60,8 +60,6 @@
             this.email = '';
             this.password = '';
 
-            // this.$store.dispatch('loginUser', true);
-
             this.$store.dispatch('setAuthToken', response.data.token)
 
             this.$router.push({
@@ -71,7 +69,6 @@
         } catch (error) {
           if (error.response) {
             if (error.response.status === 422) {
-              // Validation error, update the errors variable
               this.errors = Object.values(error.response.data.errors).flat();
             }
           } else {

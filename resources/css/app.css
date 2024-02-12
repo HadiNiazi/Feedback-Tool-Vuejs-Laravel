@@ -1,0 +1,15 @@
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mention {
+    color: #644CC6;
+    font-weight: bold;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+

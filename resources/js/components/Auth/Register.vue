@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-8"> <!-- Adjust this to fit your layout -->
+        <div class="col-md-8">
           <div class="mt-5">
             <div class="card">
               <div class="card-header">
@@ -63,8 +63,6 @@
 
 <script>
 
-import router from '../../router/index.js';
-
   export default {
     data() {
       return {
@@ -86,10 +84,7 @@ import router from '../../router/index.js';
           return;
         }
 
-        // Reset the error message if passwords match
         this.passwordMismatch = false;
-
-        // Add your registration logic here
 
         try {
         const response = await axios.post('/api/register', {
@@ -99,10 +94,8 @@ import router from '../../router/index.js';
             password_confirmation: this.password_confirmation
         });
 
-        console.log(response)
-
         if (response.status === 201) {
-            this.successMessage = response.data.message; // Set the success message
+            this.successMessage = response.data.message;
             this.name = '';
             this.email = '';
             this.password = '';
@@ -111,13 +104,11 @@ import router from '../../router/index.js';
             this.$router.push({ name: 'home' });
         }
 
-        // Handle the response, e.g., redirect on successful login
         } catch (error) {
 
             if (error.response) {
 
                 if (error.response.status === 422) {
-                // Validation error, update the errors variable
                     this.errors = Object.values(error.response.data.errors).flat();
                 }
 

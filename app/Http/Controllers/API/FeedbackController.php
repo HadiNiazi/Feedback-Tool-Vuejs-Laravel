@@ -12,9 +12,7 @@ class FeedbackController extends Controller
 {
     public function index()
     {
-        $userId = auth()->check() ? auth()->id(): null;
-
-        $feedbacks = Feedback::with(['user', 'category'])->where('user_id', $userId)->paginate(10);
+        $feedbacks = Feedback::with(['user', 'category'])->paginate(10);
 
         return response()->json($feedbacks);
     }

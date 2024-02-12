@@ -11,12 +11,6 @@ import store from './store/index.js';
 
 const app = createApp(App);
 
-
-// app.provide('store', store);
-
-// axios.defaults.headers.common["Authorization"] = 'Bearer '+ localStorage.getItem('auth_token');
-
-
 app.use(router);
 app.use(store);
 

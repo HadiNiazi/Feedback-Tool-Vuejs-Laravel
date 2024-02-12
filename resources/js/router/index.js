@@ -1,12 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import App from '../components/App.vue';
 import Login from '../components/Auth/Login.vue';
-// import Logout from '../components/Auth/Logout.vue';
 import Register from '../components/Auth/Register.vue';
 
 import Home from '../components/Home.vue';
-import Dashboard from '../components/Dashboard.vue';
+// import Dashboard from '../components/Dashboard.vue';
 import NotFound from '../components/Errors/404.vue';
 
 import FeedbackShow from '../components/Feedback/Show.vue';
@@ -23,10 +21,10 @@ const routes = [
         component: NotFound
     },
 
-    // {
-    //     path: '/',
-    //     component: Home
-    // },
+    {
+        path: '/',
+        component: Home
+    },
 
     {
         path: '/register',
@@ -43,7 +41,7 @@ const routes = [
     {
         path: '/dashboard',
         name: 'dashboard',
-        component: Dashboard,
+        component: Feedbacks,
         meta: { requiresAuth: true },
     },
 
@@ -61,12 +59,12 @@ const routes = [
         meta: { requiresAuth: true },
     },
 
-    {
-        path: '/feedbacks',
-        name: 'feedbacks',
-        component: Feedbacks,
-        meta: { requiresAuth: true },
-    }
+    // {
+    //     path: '/feedbacks',
+    //     name: 'feedbacks',
+    //     component: Feedbacks,
+    //     meta: { requiresAuth: true },
+    // }
 
 ];
 
@@ -74,29 +72,32 @@ const router = createRouter({
 
     history: createWebHistory(),
     routes,
+    linkActiveClass: 'active'
 
 });
 
 
-// router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
 
-//     const isAuthenticated = store.state.isAuthenticated;
+    const isAuthenticated = store.state.isAuthenticated;
 
-//     if (to.meta.requiresAuth && !isAuthenticated) {
+    if (to.meta.requiresAuth && !isAuthenticated) {
 
-//       next('/login');
+      next('/login');
 
-//     } else if ((to.name === 'login' || to.name === 'register') && isAuthenticated ) {
+    }
+    // else if ((to.name === 'login' || to.name === 'register') && isAuthenticated ) {
 
-//       next('/dashboard');
+    //   next('/dashboard');
 
-//     } else {
+    // }
+    else {
 
-//         console.log(isAuthenticated)
+        console.log(isAuthenticated)
 
-//       next();
-//     }
-// });
+      next();
+    }
+});
 
 
 export default router;
